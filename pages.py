@@ -114,7 +114,6 @@ def optimalityPage(page):
 
 def addItemPage(page):
     page.clean()
-    page.horizontal_alignment = ft.MainAxisAlignment.CENTER
     input_cells = [ft.TextField(scale=0.85) for i in range(8)]
 
     def addItem(e):
@@ -126,7 +125,8 @@ def addItemPage(page):
                 data.append(i.value)
                 continue
             data.append(float(i.value))
-        print(data)
+        modifier.addOptimality(data[0], data[1:])
+        editPage(page)
 
     page.add(
         ft.Container(
@@ -134,20 +134,59 @@ def addItemPage(page):
                 [
                     ft.DataTable(
                         columns=[
-                            ft.DataColumn(ft.Text("Crop", width=100)),
-                            ft.DataColumn(ft.Text("Nitrogen", width=100), numeric=True),
                             ft.DataColumn(
-                                ft.Text("Phosphorous", width=100), numeric=True
+                                ft.Text(
+                                    "Crop", width=100, text_align=ft.TextAlign.RIGHT
+                                )
                             ),
                             ft.DataColumn(
-                                ft.Text("Pottasium", width=100), numeric=True
+                                ft.Text(
+                                    "Nitrogen", width=100, text_align=ft.TextAlign.RIGHT
+                                ),
+                                numeric=True,
                             ),
                             ft.DataColumn(
-                                ft.Text("Temperature", width=100), numeric=True
+                                ft.Text(
+                                    "Phosphorous",
+                                    width=100,
+                                    text_align=ft.TextAlign.RIGHT,
+                                ),
+                                numeric=True,
                             ),
-                            ft.DataColumn(ft.Text("Humidity", width=100), numeric=True),
-                            ft.DataColumn(ft.Text("pH Value", width=100), numeric=True),
-                            ft.DataColumn(ft.Text("Rainfall", width=100), numeric=True),
+                            ft.DataColumn(
+                                ft.Text(
+                                    "Pottasium",
+                                    width=100,
+                                    text_align=ft.TextAlign.RIGHT,
+                                ),
+                                numeric=True,
+                            ),
+                            ft.DataColumn(
+                                ft.Text(
+                                    "Temperature",
+                                    width=100,
+                                    text_align=ft.TextAlign.RIGHT,
+                                ),
+                                numeric=True,
+                            ),
+                            ft.DataColumn(
+                                ft.Text(
+                                    "Humidity", width=100, text_align=ft.TextAlign.RIGHT
+                                ),
+                                numeric=True,
+                            ),
+                            ft.DataColumn(
+                                ft.Text(
+                                    "pH Value", width=100, text_align=ft.TextAlign.RIGHT
+                                ),
+                                numeric=True,
+                            ),
+                            ft.DataColumn(
+                                ft.Text(
+                                    "Rainfall", width=100, text_align=ft.TextAlign.RIGHT
+                                ),
+                                numeric=True,
+                            ),
                         ],
                         rows=[
                             ft.DataRow(
@@ -155,7 +194,15 @@ def addItemPage(page):
                             ),
                         ],
                     ),
-                    ft.IconButton(ft.icons.ADD, on_click=addItem),
+                    ft.Row(
+                        [
+                            ft.IconButton(
+                                ft.icons.ARROW_BACK, on_click=lambda err: editPage(page)
+                            ),
+                            ft.IconButton(ft.icons.ADD, on_click=addItem),
+                        ],
+                        alignment=ft.MainAxisAlignment.CENTER,
+                    ),
                 ],
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             ),
@@ -166,7 +213,6 @@ def addItemPage(page):
 
 def editPage(page):
     page.clean()
-    page.vertical_alignment = ft.MainAxisAlignment.CENTER
     db = modifier.getCrops()
     ar = []
 
