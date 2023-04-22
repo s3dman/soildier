@@ -5,3 +5,5 @@
 - Humidity
 - pH
 - Rainfall
+
+addItemPage/ rebuild into popup

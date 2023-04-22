@@ -1,5 +1,4 @@
 import pickle
-import os
 
 
 # to write a data object to a file
