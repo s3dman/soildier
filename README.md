@@ -1,0 +1,6 @@
+- mineral content
+- pH level
+- soil moisture
+- salinity
+- pesticides and chemical contamination
+- structure and texture
