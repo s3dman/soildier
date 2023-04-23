@@ -1,4 +1,5 @@
 from dbhandler import ReadDB, WriteDB
+import math
 
 
 def checkOptimality(cropname):
@@ -34,4 +35,14 @@ def getCrops(crop=None):
 
 
 def getOptimalList(data):
-    pass
+    def sort_helper(k):
+        return k[1]
+
+    scoretable = []
+    d = getCrops()
+    for i in d:
+        scoretable.append(
+            (i, 1e4 / abs(sum([i**2 for i in d[i]]) - sum([i**2 for i in data])))
+        )
+    scoretable.sort(key=sort_helper, reverse=True)
+    return scoretable

@@ -31,27 +31,35 @@ def optimalListPage(page, db):
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     ac = [
         ft.DataColumn(ft.Text(i))
-        for i in "Crop Nitrogen Phosphorous Pottasium Temperature Humidity pH Rainfall".split()
+        for i in "Score Crop Nitrogen Phosphorous Pottasium Temperature Humidity pH Rainfall".split()
     ]
-    ac.append(
-        ft.DataColumn(
-            ft.IconButton(
-                ft.icons.ARROW_BACK, on_click=lambda err: optimalityPage(page)
-            )
-        )
-    )
     ar = []
-    # for j in db:
-    #     r = [ft.DataCell(ft.Text(j))]
-    #     for i in db[j]:
-    #         r.append(ft.DataCell(ft.Text(i)))
-    #
-    #     ar.append(ft.DataRow(r))
+    rdb = modifier.getCrops()
+    for j in db:
+        print(j[1], j[0], rdb[j[0]])
+        r = [ft.DataCell(ft.Text(round(j[1], 6))), ft.DataCell(ft.Text(j[0]))]
+        for i in rdb[j[0]]:
+            r.append(ft.DataCell(ft.Text(i)))
+
+        ar.append(ft.DataRow(r))
     table = ft.DataTable(
         columns=ac,
         rows=ar,
     )
-    page.add(ft.Container(table, alignment=ft.alignment.center))
+
+    page.add(
+        ft.Container(
+            ft.Column(
+                [
+                    ft.IconButton(
+                        ft.icons.ARROW_BACK, on_click=lambda err: optimalityPage(page)
+                    ),
+                    table,
+                ],
+            ),
+            alignment=ft.alignment.center,
+        )
+    )
 
 
 def optimalityPage(page):
@@ -65,7 +73,6 @@ def optimalityPage(page):
             if i.value == "":
                 return -1
             data.append(float(i.value))
-        modifier.getOptimalList(data)
         optimalListPage(page, modifier.getOptimalList(data))
 
     page.add(
