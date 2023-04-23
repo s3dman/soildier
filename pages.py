@@ -26,20 +26,23 @@ def mainPage(page):
     )
 
 
-def optimalListPage(page, db):
+def optimalListPage(page, db, data):
     page.clean()
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     ac = [
         ft.DataColumn(ft.Text(i))
-        for i in "Score Crop Nitrogen Phosphorous Pottasium Temperature Humidity pH Rainfall".split()
+        for i in "Score(↑) Crop Nitrogen(r) Phosphorous(r) Pottasium(r) Temperature(°C) Humidity(%) pH Rainfall(mm)".split()
     ]
     ar = []
     rdb = modifier.getCrops()
     for j in db:
         print(j[1], j[0], rdb[j[0]])
-        r = [ft.DataCell(ft.Text(round(j[1], 6))), ft.DataCell(ft.Text(j[0]))]
-        for i in rdb[j[0]]:
-            r.append(ft.DataCell(ft.Text(i)))
+        r = [ft.DataCell(ft.Text(j[1])), ft.DataCell(ft.Text(j[0]))]
+        for i in range(len(rdb[j[0]])):
+            p = (
+                "+" if data[i] >= rdb[j[0]][i] else "-"
+            ) + f"{abs(data[i] - rdb[j[0]][i]):.3f}"
+            r.append(ft.DataCell(ft.Text(f"{rdb[j[0]][i]:.3f} ({p})")))
 
         ar.append(ft.DataRow(r))
     table = ft.DataTable(
@@ -73,7 +76,7 @@ def optimalityPage(page):
             if i.value == "":
                 return -1
             data.append(float(i.value))
-        optimalListPage(page, modifier.getOptimalList(data))
+        optimalListPage(page, modifier.getOptimalList(data), data)
 
     page.add(
         ft.Container(
@@ -231,7 +234,7 @@ def editPage(page):
     for j in db:
         r = [ft.DataCell(ft.Text(j))]
         for i in db[j]:
-            r.append(ft.DataCell(ft.Text(i)))
+            r.append(ft.DataCell(ft.Text(f"{i:.3f}")))
 
         r.append(
             ft.DataCell(
@@ -242,7 +245,7 @@ def editPage(page):
 
     ac = [
         ft.DataColumn(ft.Text(i))
-        for i in "Crop Nitrogen Phosphorous Pottasium Temperature Humidity pH Rainfall".split()
+        for i in "Crop Nitrogen(r) Phosphorous(r) Pottasium(r) Temperature(°C) Humidity(%) pH Rainfall(mm)".split()
     ]
     ac.append(
         ft.DataColumn(
