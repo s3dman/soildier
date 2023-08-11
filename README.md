@@ -1,7 +1,1 @@
-- N
-- P
-- K
-- Temperature
-- Humidity
-- pH
-- Rainfall
+Flet app for soil nutrient analysis 
